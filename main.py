@@ -9,12 +9,12 @@ row0_1, row0_spacer2, row0_2, row0_spacer3 = st.columns((3, .2, 0.55, .1))
 row0_1.title('York Data Archive')
 with row0_2:
     st.write('')
-row0_2.subheader('Web App by [Toby Avila](https://www.linkedin.com/in/toby-avila-118080208/)')
-st.subheader('_Was the data helpful?_')
 
 st.subheader("")
 with st.form("my_form"):
-    place = st.text_input("Target", "")
+    place = st.text_input("Target", "Polaris")
+    parent_folder_id = st.text_input("Parent ID (exp. 14bMWZWJeLGoZR-UaksDX5gFGaNzB8c6C)", "")
+    parent_folder_dir = st.text_input("Parent Directory (exp. /home/toby/Downloads)", "")
     submit = st.form_submit_button(label="Submit")
 
 # A browser window will open. login using the appropriate account.
@@ -23,9 +23,9 @@ gauth.LocalWebserverAuth()
 drive = GoogleDrive(gauth)
 
 # Set the id of the Google Drive folder. You can find it in the URL of the google drive folder.
-parent_folder_id = '14bMWZWJeLGoZR-UaksDX5gFGaNzB8c6C'
+#   parent_folder_id = '14bMWZWJeLGoZR-UaksDX5gFGaNzB8c6C'
 # Set the parent folder, where you want to store the contents of the google drive folder
-parent_folder_dir = '/home/toby/Downloads/Data/XXCyg'
+#   parent_folder_dir = '/home/toby/Downloads/Data/XXCyg'
 
 if parent_folder_dir[-1] != '/':
     parent_folder_dir = parent_folder_dir + '/'
@@ -44,7 +44,7 @@ while len(folder_queue) != 0:
     file_list = drive.ListFile({'q': "'{}' in parents and trashed=false".format(current_folder_id)}).GetList()
 
     current_parent = dir_queue.pop(0)
-    print(current_parent, current_folder_id)
+    st.caption(current_parent + current_folder_id)
     for file1 in file_list:
         file_dict[cnt] = dict()
         file_dict[cnt]['id'] = file1['id']
